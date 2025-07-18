@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* تایم‌ریلاین رنگی */
+.timeline-red { border-right: 4px solid #d32f2f; }
+.timeline-yellow { border-right: 4px solid #fbc02d; }
+.timeline-green { border-right: 4px solid #388e3c; } 

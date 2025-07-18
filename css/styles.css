@@ -1,0 +1,16 @@
+body {
+  direction: rtl;
+  font-family: 'Vazir', 'Cairo', Arial, sans-serif;
+}
+
+/* رنگ‌های دپارتمانی */
+.dept-ops { background: #1976d2; color: #fff; }
+.dept-fm { background: #388e3c; color: #fff; }
+.dept-security { background: #d32f2f; color: #fff; }
+.dept-cleaning { background: #fbc02d; color: #222; }
+
+/* استایل چاپ PDF */
+@media print {
+  body { background: #fff; color: #000; }
+  .no-print { display: none; }
+} 

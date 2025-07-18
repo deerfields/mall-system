@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: ${BACKEND_TARGET:-dev}
+    environment:
+      - ENV=${ENV:-development}
+    volumes:
+      - ./backend:/app
+      - ./database:/app/../database
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - NODE_ENV=development
+
+  db:
+    image: sqlite3
+    # برای sqlite نیازی به سرویس جدا نیست، اما اگر از PostgreSQL یا MySQL استفاده می‌کنید، اینجا تعریف کنید
+    # image: postgres:15
+    # environment:
+    #   POSTGRES_USER: user
+    #   POSTGRES_PASSWORD: pass
+    #   POSTGRES_DB: mall
+    # ports:
+    #   - "5432:5432"
+    # volumes:
+    #   - ./database:/var/lib/postgresql/data
+
+  test:
+    build:
+      context: ./backend
+      target: dev
+    command: ["pytest"]
+    volumes:
+      - ./backend:/app
+      - ./database:/app/../database
+    depends_on:
+      - db 
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus 
